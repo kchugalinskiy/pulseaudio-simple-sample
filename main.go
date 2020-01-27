@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/kchugalinskiy/pulseaudio/simple"
-
 	"github.com/gotk3/gotk3/gtk"
+	"github.com/kchugalinskiy/pulseaudio/simple"
 )
 
 func main() {
@@ -26,7 +25,7 @@ func main() {
 	})
 
 	f := simple.SampleSpec{
-		Format:   simple.SampleFormatS32LE,
+		Format:   simple.SampleFormatS16LE,
 		Rate:     44100,
 		Channels: 1,
 	}
@@ -50,13 +49,13 @@ func main() {
 			case <-exitCh:
 				return
 			default:
-				b, err := rec.Read(1024)
+				b, err := rec.Read16(1024)
 				if err != nil {
 					fmt.Printf("reading audio: %v\n", err)
 					continue
 				}
 
-				if err = play.Write(b); err != nil {
+				if err = play.Write16(b); err != nil {
 					fmt.Printf("writing audio: %v\n", err)
 					continue
 				}
